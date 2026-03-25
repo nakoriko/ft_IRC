@@ -1,0 +1,6 @@
+*.o
+ircserv
+.DS_Store
+.directory
+*.tmp
+*.log
