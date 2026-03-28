@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 11:48:55 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/25 19:06:56 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/28 10:10:54 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@ private:
 	std::queue<std::string> _pending_messages; // "fila di messaggi", to kkep the order(subject) 
 
 public:
+	Client(int fd);
+	~Client();
 	void setNickname(std::string &nickname);
 	void setUsername(std::string &username);
 	void setPassChecked(bool value);
 	void setRegistered(bool value);
 
-	std::string getName() const;
+	std::string getNickname() const;
 	std::string getUsername() const;
 	int getFd() const; 
 
