@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 11:48:55 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/28 10:10:54 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/28 12:46:32 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ public:
 	void parseMessages(); //parse readbuffer by \r\n -> put in _pending_messages;
 	bool hasPendingMessage();//checks_pending_messages
 	void extractFromPending(); // takes out from _pending_messages
-
+	std::string getNextMessage();
 //for sending messages
 
-	void sendMessage(std::string &msg); // put to write_buffer
+	void sendMessage(const std::string &msg); // put to write_buffer
 	bool hasMessageToSend();// check _write_buffer
-	void extractToSend(); // extract for send method and removes from write_buffer;
+	std::string extractToSend(); // extract for send method and removes from write_buffer;
 
 };
 
