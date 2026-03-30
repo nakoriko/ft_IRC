@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 14:40:10 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/25 19:07:00 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/30 10:26:08 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,31 @@
 
 class Server;
 class Client;
+#include <string>
+#include <vector>
+
+//prototipo uguale per tutti i commandi:
+// Server, Client, vector di strings params, string trailing("messaggio"); 
+
 
 //NAT (basic server commands)
-//PASS, NICK, USER, JOIN, PRIVMSG, PART, QUIT, PING
+void cmd_nick (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
+void cmd_pass (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
+void cmd_user (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
+void cmd_quit (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
+void cmd_ping (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
+
+//NAT (basic channel commands)
+void cmd_join (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
+void cmd_part (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
+void cmd_privmsg (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
 
 //LEO (operator commands)
-// KICK, INVITE, TOPIC, MODE (5 modes with +/-flags)
+void cmd_invite (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
+void cmd_kick (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
+void cmd_mode (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
+void cmd_topic (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
+
 
 
 

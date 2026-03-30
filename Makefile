@@ -6,7 +6,7 @@
 #    By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/25 10:30:33 by nakoriko          #+#    #+#              #
-#    Updated: 2026/03/27 11:50:32 by nakoriko         ###   ########.fr        #
+#    Updated: 2026/03/30 10:37:58 by nakoriko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,11 @@ NAME = ircserv
 SRCS = srcs/main.cpp srcs/Server.cpp srcs/Client.cpp srcs/CommandHandler.cpp \
 		srcs/commands/Join.cpp  srcs/commands/Nick.cpp srcs/commands/Part.cpp \
 		srcs/commands/Pass.cpp srcs/commands/Ping.cpp srcs/commands/PrivMsg.cpp \
-		srcs/commands/Quit.cpp srcs/commands/User.cpp
+		srcs/commands/Quit.cpp srcs/commands/User.cpp \
+		\
+		srcs/commands/Invite.cpp srcs/commands/Kick.cpp \
+		srcs/commands/Mode.cpp srcs/commands/Topic.cpp\
+
 	
 
 OBJ = $(SRCS:.cpp=.o)
