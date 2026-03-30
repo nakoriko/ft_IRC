@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 11:35:58 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/28 09:59:59 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/30 13:08:44 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ public:
 	void run();  //core. run loop until server will stopped (by signal);
 	// void stop();// check if run -> stop
 	void acceptNewClient();
+	void removeClient(int fd);
 	void handleClientRead(int fd);
 	void handleClientWrite(int fd);
 	Client *getClient(std::string &nick); //to find client by his name in map
