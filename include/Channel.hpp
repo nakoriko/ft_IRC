@@ -31,13 +31,13 @@ public:
 	Channel(const std::string &name);//creates channel with name
 
 	//Actions with members (for JOIN, PART, KICK, OUT)
-	void addMember(Client *client);
-	void removeMember(Client *client);
-	bool isMember(Client *client);
+	void addMember(Client *client);//agiungere to channel
+	void removeMember(Client *client); //from channel (tutti elenci)
+	bool isMember(Client *client); //check se presente dentro _members
 
 	//Actions with Operators (need to check the rights for commands and for MODE +o / -o)
 	void addOperator(Client *client);
-	void removeOperator(Client *client);
+	void removeOperator(Client *client); 
 	bool isOperator(Client *client) const;
 
 	//Invites control (needs for INVITe and Join if mode +i)
@@ -45,7 +45,7 @@ public:
 	bool isInvited(std::string &nickname);
 
 	//send message to all members of channel
-	void broadcast(const std::string *message);
+	void broadcast(const std::string *message); //+a parte  cliente appena aggiunto (Join.cpp n8.)
 
 	//Getters for commands
 	//......
