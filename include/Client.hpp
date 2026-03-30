@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 11:48:55 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/28 12:46:32 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/30 15:06:41 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ private:
 	std::string _username;
 	bool _registered; // autentification
 	bool _pass_checked;// autentification
-	std::string _read_buffer; //for read msgs
+	std::string _read_buffer; //for read msgs by server
 	std::string _write_buffer; // for write msgs
 	std::queue<std::string> _pending_messages; // "fila di messaggi", to kkep the order(subject) 
 

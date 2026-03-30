@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 16:41:09 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/30 10:34:40 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/30 15:26:56 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 #include "Server.hpp"
 #include "Client.hpp"
+#include <iostream>
 
 std::string CommandHandler::trim(const std::string &str) {
 	size_t start = str.find_first_not_of(" \t");
@@ -170,8 +171,10 @@ ParsedCommand CommandHandler::parse(const std::string &row) {
 
 
 void CommandHandler::execute(Server &server, Client &client, const std::string &raw) {
-
+	// std::cout << "Debug: execute called with : " << raw << std::endl;
 	ParsedCommand cmd = parse(raw); // la struttura
+	// std::cout << "Debug: command: " << cmd.command << std::endl;
+
 	if(cmd.command.empty()) {
 		client.sendMessage("Error: empty command\r\n"); //!cambiare dopo al format di RFC "Error replies"
 		return ;
@@ -210,8 +213,9 @@ void CommandHandler::execute(Server &server, Client &client, const std::string &
 		client.sendMessage("Error: invalid command\r\n");//!eliminare quando isValidCommand sara finito
 			return ;
 	}
-	
+	//eseguiamo il metodo che corrisponde a "NOME" di commanda dentro la mappa sopra
 	it->second(server, client, cmd.params, cmd.trailing);
+	
 
 	//SPIEGAZIONE:
 	//commands - la mappa (sopra)
