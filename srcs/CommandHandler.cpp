@@ -6,12 +6,17 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 16:41:09 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/30 08:22:09 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/30 10:34:40 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/CommandHandler.hpp"
+#include "../include/Commands.hpp"
+
 #include <string>
+
+#include "Server.hpp"
+#include "Client.hpp"
 
 std::string CommandHandler::trim(const std::string &str) {
 	size_t start = str.find_first_not_of(" \t");
@@ -72,7 +77,7 @@ ParsedCommand CommandHandler::parse(const std::string &row) {
 }
 //PARAMS PARSING PER OGNI COMMANDO - DA FINIRE
 
-// bool CommandHandler::isValidCommand(const ParsedCommand &cmd) {
+// bool CommandHandler::isValidCommand(Server &server, Client &client, const ParsedCommand &cmd) {
 	
 // 	//INVITE
 // 	if(cmd.command == "INVITE") {
@@ -165,9 +170,52 @@ ParsedCommand CommandHandler::parse(const std::string &row) {
 
 
 void CommandHandler::execute(Server &server, Client &client, const std::string &raw) {
+
+	ParsedCommand cmd = parse(raw); // la struttura
+	if(cmd.command.empty()) {
+		client.sendMessage("Error: empty command\r\n"); //!cambiare dopo al format di RFC "Error replies"
+		return ;
+	}
 	
-	(void) server;
-	(void) client;
-	(void) raw;
+	// if(!isValidCommand(server, client, cmd)) { //!is Valid deve inviare e messaggi con i messggi giusti in format RFC
+	// 	return ;
+	// }
+
+	//1. Creamo la mappa dei commandi per riconoscerli: [nome] -> [metodo] (una volta solo (per la prima chiamata
+	// Argomenti per i metodi: server, client, params, trailing 
+	static std::map<std::string, void(*)(Server&, Client&, const std::vector<std::string>&, const std::string&)> commands;
+	
+	static bool init = false;
+	if(!init) {
+		//Set commands map (str + void)
+		commands["INVITE"] = cmd_invite;
+		commands["JOIN"] = cmd_join;
+		commands["KICK"] = cmd_kick;
+		commands["MODE"] = cmd_mode;
+		commands["NICK"] = cmd_nick;
+		commands["PART"] = cmd_part;
+		commands["PASS"] = cmd_pass;
+		commands["PING"] = cmd_ping;
+		commands["PRIVMSG"] = cmd_privmsg;
+		commands["QUIT"] = cmd_quit;
+		commands["TOPIC"] = cmd_topic;
+		commands["USER"] = cmd_user;
+		init = true;
+	}
+
+	//2. Cerchiamo commanda dentro map -> eseguiamo
+	std::map<std::string, void(*)(Server&, Client&, const std::vector<std::string>&, 
+		const std::string&)>::iterator it = commands.find(cmd.command);
+	if(it == commands.end()) {
+		client.sendMessage("Error: invalid command\r\n");//!eliminare quando isValidCommand sara finito
+			return ;
+	}
+	
+	it->second(server, client, cmd.params, cmd.trailing);
+
+	//SPIEGAZIONE:
+	//commands - la mappa (sopra)
+	//cmd - struttura (struct ParsedCommand dentro CommandHandler.hpp)
+	//command - nome dentro strutt cmd 
 }
 
