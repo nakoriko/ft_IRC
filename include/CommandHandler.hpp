@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 16:41:55 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/28 12:18:05 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/29 19:54:53 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 #include <string>
 #include <vector>
+#include "../include/ParamValidator.hpp"
 
 class Server;
 class Client;
@@ -33,7 +34,9 @@ struct ParsedCommand {
 
 class CommandHandler {
 	public:
+		static std::string trim(const std::string &str);
 		static ParsedCommand parse(const std::string &row);
+		static bool isValidCommand(const ParsedCommand &cmd);
 		static void execute(Server &server, Client &client, const std::string &raw);
 };
 
