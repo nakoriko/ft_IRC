@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 16:51:18 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/28 12:46:29 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/31 18:00:35 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void Client::setNickname(std::string &nickname) {
 	_nickname = nickname;
 }
 
-void Client:: setUsername(std::string &username) {
+void Client:: setUsername(const std::string &username) {
 	_username = username;
 }
 
@@ -34,6 +34,15 @@ void Client::setPassChecked(bool value) {
 void Client::setRegistered(bool value) {
 	_registered = value;
 }
+
+bool Client::isRegistered() const {
+	return _registered;
+}
+
+bool Client::isPassChecked() const {
+	return _pass_checked;
+}
+
 
 std::string Client::getNickname() const{
 	return _nickname;

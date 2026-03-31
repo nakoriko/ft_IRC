@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 12:27:39 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/30 15:25:43 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/31 17:46:29 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,30 @@ Client* Server::getClient(std::string &nick) {
 	return NULL;
 }
 
-Channel* getChannel(std::string &name) {
+Channel* Server::getChannel(std::string &name) {
 	(void) (name);
 	return NULL;
 }
+
+std::string Server::getPassword() const {
+	return _password;
+}
+
+bool Server::isNickTaken(const std::string &nick) {
+	for (std::map<int, Client*>::iterator it  = _clients.begin(); it != _clients.end(); it++) {
+		if(it->second->getNickname() == nick)
+			return true;
+	}
+	return false;
+}
+
+void Server::checkRegistration(Client &client) {
+	if(client.isPassChecked() && !client.getNickname().empty() && !client.getUsername().empty()) 
+	{
+		client.setRegistered(true);
+		client.sendMessage(":server 001 " + client.getNickname() + " :Welcome to the IRC server\r\n");
+	}
+}
+
+
+

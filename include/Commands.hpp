@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 14:40:10 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/30 18:02:58 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/30 18:30:03 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void cmd_topic (Server &server, Client &client, const std::vector<std::string> &
 
 //Basic commands (regular user can do) 
 // NICK - set a nickName (goes first)
-// PASS - authentication (secont)
+// PASS - authentication (second)
 // USER - set a username (just after frist 2)
 // JOIN - join a channel;
 // PRIVMSG - send and receive private message to channel or another client;

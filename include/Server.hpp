@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 11:35:58 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/30 13:08:44 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/31 16:29:31 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ public:
 	void handleClientWrite(int fd);
 	Client *getClient(std::string &nick); //to find client by his name in map
 	Channel *getChannel(std::string &name);
+	std::string getPassword() const;
+	bool isNickTaken(const std::string &nick);
+	void checkRegistration(Client &client);
 	
 };
 
