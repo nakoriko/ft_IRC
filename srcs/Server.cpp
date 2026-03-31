@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 12:27:39 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/31 17:46:29 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:28:48 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,16 @@ void Server::acceptNewClient() {
 void Server::removeClient(int fd) {
 //Client puo cdisconettersi in qualsiasi momento 
 //-> bisogna di chiudere  corettamnte il socket e liberare il suo fd
-	
-//1. Dal polfds
+	std::map<int, Client *>::iterator it = _clients.find(fd);
+	if(it == _clients.end())
+		return ;
+	Client *client = it->second;
+//1. Bisogna di eliminare anche da tutti i canali, in quale e presente
+	// for (std::map<std::string, Channel*>::iterator chan_it = _channels.begin();
+	// 	chan_it != _channels.end(); chan_it++) {
+	// 		chan_it->second->removeMember(client); //Channel.cpp
+	//}
+//2. Dal polfds
 	for(size_t i = 0; i < _pollfds.size(); i++) {
 		if(_pollfds[i].fd == fd) {
 			_pollfds.erase(_pollfds.begin() + i);
@@ -150,11 +158,9 @@ void Server::removeClient(int fd) {
 		}
 	}
 //2.Dalla mappa
-	std::map<int, Client *>::iterator it = _clients.find(fd);
-	if(it != _clients.end()) {
-		delete it->second; //eliminiamo client*;
-		_clients.erase(it); // canceliamo la row intera;
-	}
+	delete client; //eliminiamo client*;
+	_clients.erase(it); // canceliamo la row intera;
+
 //3. Chiudiamo il socket
 	close(fd);
 }

@@ -32,34 +32,54 @@ private:
 public:
 	Channel(const std::string &name);//creates channel with name
 
-	//Actions with members (for JOIN, PART, KICK, OUT)
+
+	//MEMBERS (for JOIN, PART, KICK, OUT)
 	void addMember(Client *client);//agiungere to channel
 	void removeMember(Client *client); //from channel (tutti elenci)
-	bool isMember(Client *client); //check se presente dentro _members
+	bool isMember(Client *client) const; //check se presente dentro _members
 
-	//Actions with Operators (need to check the rights for commands and for MODE +o / -o)
+	//OPERATORS(need to check the rights for commands and for MODE +o / -o)
 	void addOperator(Client *client);
 	void removeOperator(Client *client); 
 	bool isOperator(Client *client) const;
 
-	//Invites control (needs for INVITe and Join if mode +i)
-	void addInvited(std::string &nickname);
-	bool isInvited(std::string &nickname);
+	//INVITES (needs for INVITe and Join if mode +i)
+	void addInvited(const std::string &nickname);
+	bool isInvited(std::string &nickname) const;
 
-	//send message to all members of channel
-	void broadcast(const std::string *message); //+a parte  cliente appena aggiunto (Join.cpp n8.)
+	//BROADCAST send message to all members of channel
+	// void broadcast(const std::string &message, Client *exlude = NULL); //+a parte  cliente appena aggiunto (Join.cpp n8.)
 
-	//Getters for commands
-	std::string getTopic();
+	
+	//TOPIC
+	void setTopic(const std::string &topic);
+	const std::string &getTopic()const;
 	std::string getTopicCreator();
 	std::string getTopicTime();// long timestamp convertito in string
-	//......
 
-	//Setter and bool checkerss for Modes:
-	// i - invite only
-	bool isRestricted();// t - topic restricted to operators
-	// k - channel key
-	// l - user limits
+	//MODES
+	//-i/+i
+	void setInviteOnly(bool value);
+	bool isInviteOnly() const;
+
+	//+t /-t
+	void setTopicRestricted(bool value);
+	bool isTopicRestricted() const;
+
+	//+k / -k
+	void setKey(const std::string &key);
+	bool checkKey(const std::string &key) const;
+
+	//+l/-l
+	void setUserLimit(int limit);
+	bool canJoin() const;
+	int getUserLimit() const;
+	
+	
+	//GETTERS
+	const std::string &getName() const;
+	const std::map<std::string, Client*> &getMembers() const;
+	const std::map<std::string, Client *> &getOperators() const;
 };
 
 
