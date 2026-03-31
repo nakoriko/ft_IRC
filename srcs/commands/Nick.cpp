@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 16:32:51 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/30 18:00:51 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/03/31 17:42:50 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,33 @@
 //Set o change nickName of client
 
 void cmd_nick (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing) {
-	(void) server;
-	(void) client;
-	(void) params;
+
 	(void) trailing;
 
 //1. Controllare che c'e il nick dentro params
-//2. Check, che non e vuoto (parsing?)
+	if(params.empty()) {
+	client.sendMessage("461 " + client.getNickname() + " NICK :Not enough parameters\r\n");
+	return;
+	}
+
+	//2. Check, che non e vuoto (parsing?)
+	std::string new_nick = params[0];
+	if(new_nick.empty()) {
+		client.sendMessage("432 " + client.getNickname() + " " + new_nick + " :Erroneus nickname\r\n");
+	}
 //3. Check se disponibile (server.clients()), inviare un errore se si
+	if(server.isNickTaken(new_nick)) {
+		client.sendMessage("433 " + client.getNickname() + " " + new_nick + " :Nickname is already in use\r\n");
+		return ;
+	}
 //4. SetNickName() (se lo cambia)
+	std::string old_nick = client.getNickname();
+	client.setNickname(new_nick);
 //5. Inviar ela conferma (se lo cambiato + messagio per channels (se dentro channels))
+	//aspetto broadcast() - tutti, except *this client;
+
 //6. Check registrazione + username + nickname -> iviare welcome (RFC)
+	server.checkRegistration(client); // se c'e il pass, nick e user - > inviare welcome message)
 
 
 }
