@@ -8,12 +8,15 @@
 #include <string>
 #include <set>
 #include <map>
+#include <ctime>
 #include "Client.hpp"
 
 class Channel {
 private:
 	std::string _name;
 	std::string _topic; //command TOPIC
+	std::string _topic_creator;
+	std::time_t  _topic_time;
 
 	//"Databases":
 	std::map<std::string, Client*> _members; //needs for JOIN, PART,KICK,QUIT, PRIVMSG
@@ -49,7 +52,7 @@ public:
 	// void broadcast(const std::string &message, Client *exlude = NULL); //+a parte  cliente appena aggiunto (Join.cpp n8.)
 
 	//TOPIC
-	void setTopic(const std::string &topic);
+	void setTopic(const std::string &topic, Client *creator);
 	const std::string &getTopic()const;
 
 	//MODES

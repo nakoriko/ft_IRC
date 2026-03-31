@@ -10,8 +10,10 @@ Channel::Channel(const std::string &name)
 	_invite_only(false),
 	_top_restricted(false),
 	_key(""),
-	_user_limit(0) {}
-
+	_user_limit(0), 
+	_topic_time(0),
+	_topic_creator("")
+	{}
 
 
 // GETTERS
@@ -20,10 +22,12 @@ Channel::Channel(const std::string &name)
 	}
 
 	
-
 //TOPIC
-	void Channel::setTopic(const std::string &topic) {
+	void Channel::setTopic(const std::string &topic, Client *creator) {
 		_topic = topic;
+		//std::time ritorna time attuale (si usa con NULL, se serve solo il numero)
+		_topic_time = std::time(NULL); 
+		_topic_creator = creator->getNickname();
 	}
 
 	const std::string &Channel::getTopic()const {
