@@ -1,1 +1,130 @@
 //Alessandro
+
+
+#include "../include/Channel.hpp"
+
+
+Channel::Channel(const std::string &name) 
+	:_name(name),
+	_topic(""),
+	_invite_only(false),
+	_top_restricted(false),
+	_key(""),
+	_user_limit(0) {}
+
+
+
+// GETTERS
+	const std::string &Channel::getName() const {
+		return _name;
+	}
+
+	
+
+//TOPIC
+	void Channel::setTopic(const std::string &topic) {
+		_topic = topic;
+	}
+
+	const std::string &Channel::getTopic()const {
+		return _topic;
+	}
+
+//MEMBERS
+
+void Channel::addMember(Client *client) {
+	_members[client->getNickname()] = client;
+}
+
+void Channel::removeMember(Client *client) {
+	_members.erase(client->getNickname());
+	_operators.erase(client->getNickname());
+	_invited.erase(client->getNickname());
+}
+
+bool Channel::isMember(Client *client) const{
+	if(_members.find(client->getNickname()) == _members.end())
+		return false;
+	return true;
+}
+
+//OPERATORS
+	void Channel::addOperator(Client *client) {
+		_operators[client->getNickname()] = client;
+	}
+
+	void Channel::removeOperator(Client *client) {
+		_operators.erase(client->getNickname());
+	}
+	bool Channel::isOperator(Client *client) const {
+		if(_operators.find(client->getNickname()) == _operators.end())
+			return false;
+		return true;
+	}
+
+//INVITES
+	void Channel::addInvited(const std::string &nickname)  {
+		_invited.insert(nickname);
+	}
+	bool Channel::isInvited(std::string &nickname) const {
+		if(_invited.find(nickname) == _invited.end())
+			return false;
+		return true;
+	}
+
+	//BROADCAST send message to all members of channel
+	// void Channel::broadcast(const std::string &message, Client *exlude = NULL); //+a parte  cliente appena aggiunto (Join.cpp n8.)
+
+
+	//MODES
+	//-i/+i
+	void Channel::setInviteOnly(bool value) {
+		_invite_only = value;
+	}
+	bool Channel::isInviteOnly() const {
+		return _invite_only;
+	}
+
+	//+t /-t
+	void Channel::setTopicRestricted(bool value) {
+		_top_restricted = value;
+	}
+	bool Channel::isTopicRestricted() const {
+		return _top_restricted;
+	}
+
+	//+k / -k
+	void Channel::setKey(const std::string &key) {
+		_key = key;
+	}
+	bool Channel::checkKey(const std::string &key) const {
+		if(_key.empty())
+			return true; //il canale senza la chiave(_key e' vuota)
+		if(key == _key)
+			return true;
+		return false;
+	}
+
+	//+l/-l
+	void Channel::setUserLimit(int limit) {
+		_user_limit = limit;
+	}
+
+	bool Channel::canJoin() const {
+		if(_user_limit > 0 && _members.size() >= static_cast<size_t>(_user_limit))
+			return false;
+		return true;
+	}
+
+	int Channel::getUserLimit() const {
+		return _user_limit;
+	}
+	
+	
+	//GETTERS
+	const std::map<std::string, Client*> &Channel::getMembers() const {
+		return _members;
+	}
+	const std::map<std::string, Client *> &Channel::getOperators() const {
+		return _operators;
+	}
