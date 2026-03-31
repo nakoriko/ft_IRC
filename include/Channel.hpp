@@ -14,6 +14,8 @@ class Channel {
 private:
 	std::string _name;
 	std::string _topic; //command TOPIC
+	std::string _topic_creator; //utente che ha scritto il topic attuale
+	long _topic_time; //unix timestamp per data dell'ultima modifica a _topic
 
 	//"Databases":
 	std::map<std::string, Client*> _members; //needs for JOIN, PART,KICK,QUIT, PRIVMSG
@@ -48,11 +50,14 @@ public:
 	void broadcast(const std::string *message); //+a parte  cliente appena aggiunto (Join.cpp n8.)
 
 	//Getters for commands
+	std::string getTopic();
+	std::string getTopicCreator();
+	std::string getTopicTime();// long timestamp convertito in string
 	//......
 
 	//Setter and bool checkerss for Modes:
 	// i - invite only
-	// t - topic restricted to operators
+	bool isRestricted();// t - topic restricted to operators
 	// k - channel key
 	// l - user limits
 };
