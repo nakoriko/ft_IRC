@@ -87,7 +87,13 @@ bool Channel::isMember(Client *client) const{
 	}
 
 	//BROADCAST send message to all members of channel
-	// void Channel::broadcast(const std::string &message, Client *exlude = NULL); //+a parte  cliente appena aggiunto (Join.cpp n8.)
+	void Channel::broadcast(const std::string &message, Client *exlude = NULL) {
+		for(std::map<std::string, Client*>::iterator it = _members.begin(); it != _members.end(); it++) {
+			if(exlude && it->second == exlude)
+				continue;
+			it->second->sendMessage(message);
+		}
+	} //+a parte  cliente appena aggiunto (Join.cpp n8.)
 
 
 	//MODES

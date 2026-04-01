@@ -50,7 +50,7 @@ public:
 	bool isInvited(std::string &nickname) const;
 
 	//BROADCAST send message to all members of channel
-	// void broadcast(const std::string &message, Client *exlude = NULL); //+a parte  cliente appena aggiunto (Join.cpp n8.)
+	void broadcast(const std::string &message, Client *exlude = NULL); //+a parte  cliente appena aggiunto (Join.cpp n8.)
 
 	
 	//TOPIC
