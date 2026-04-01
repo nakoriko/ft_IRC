@@ -38,7 +38,7 @@ void cmd_privmsg (Server &server, Client &client, const std::vector<std::string>
 void cmd_invite (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
 void cmd_kick (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
 void cmd_mode (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing);
-void cmd_topic (Server &server, Client &client, std::vector<std::string> params, std::string trailing);
+void cmd_topic (Server &server, Client &client, const std::vector<std::string> params, const std::string &trailing);
 
 
 
