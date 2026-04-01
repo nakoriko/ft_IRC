@@ -5,6 +5,13 @@
 #include "../../include/Commands.hpp"
 #include "../../include/Channel.hpp"
 
+// TOPIC reply message example:
+//  >invia messaggio 331(RPL_NOTOPIC) o 332(RPL_TOPIC)
+//   "<client> <channel> :No topic is set" o "<client> <channel> :<topic>"
+//   ":irc.example.com 332 alice #general :Welcome to the general channel"
+//  >invia messaggio 333(RPL_TOPICWHOTIME to let them know who set the topic (<nick>) and when they set it (<setat> is a unix timestamp)
+//   "<client> <channel> <nick> <setat>"
+//   ":irc.example.com 333 alice #general bob *date*"
 static void giveTopic(Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing) {
 	(void) trailing;
 	Channel *channel = server.getChannel(params[0]);
@@ -14,12 +21,10 @@ static void giveTopic(Server &server, Client &client, const std::vector<std::str
 			client.sendMessage("331 " + client.getNickname() + " " + channel->getName() + " :No topic is set\r\n");
 	}
 	else {
-		//invia messaggio 332(RPL_TOPIC)
-		client.sendMessage(":server 332 " + client.getNickname() + ": the topic of #" + \
-			channel->getName() + " is " + channel->getTopic() + "\r\n");
-		//invia messaggio 333(RPL_TOPICWHOTIME to let them know who set the topic (<nick>) and when they set it (<setat> is a unix timestamp)
-		client.sendMessage(":server 332 " + client.getNickname() + ": topic last changed by " + \
-			channel->getTopicCreator() + " on " + channel->getTopicTime() + "\r\n");
+		client.sendMessage(":server 332 " + client.getNickname() + " #" + \
+			channel->getName() + " :" + channel->getTopic() + "\r\n");
+		client.sendMessage(":server 333 " + client.getNickname() + " " + \
+			channel->getTopicCreator() + " " + channel->getTopicTime() + "\r\n");
 	}
 }
 
@@ -30,18 +35,21 @@ static void	changeTopic(Server &server, Client &client, const std::vector<std::s
 	channel->setTopic(trailing, &client);
 	if (channel->getTopic() == "") {
 		//invia messaggio 331(RPL_NOTOPIC)
-		client.sendMessage(":server 331 " + client.getNickname() + ": has deleted the channel #" + channel->getName() + "'s topic\r\n");
+		client.sendMessage(":server 331 " + client.getNickname() + " #" + channel->getName() + ":No topic is set\r\n");
 	}
 	else {
-		client.sendMessage(":server 332 " + client.getNickname() + ": the topic of #" + \
-			channel->getName() + " is " + channel->getTopic() + "\r\n");
+		//    !!!!!!!!!!!!!!!!!!!!!!!!!!!!! Usare broadcast !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//invia messaggio 332(RPL_TOPIC)
+		client.sendMessage(":server 332 " + client.getNickname() + " #" + \
+			channel->getName() + " :" + channel->getTopic() + "\r\n");
 	}
 	//invia messaggio 333(RPL_TOPICWHOTIME)
-	client.sendMessage(":server 332 " + client.getNickname() + ": topic last changed by " + \
-		channel->getTopicCreator() + " on " + channel->getTopicTime() + "\r\n");
+	client.sendMessage(":server 333 " + client.getNickname() + " " + \
+			channel->getTopicCreator() + " " + channel->getTopicTime() + "\r\n");
 }
 
 //set o mostra topic di canale
+//https://modern.ircdocs.horse/#topic-message
 void cmd_topic (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing) {
 	//prima cosa da controllare
 	if (params.empty()) {
