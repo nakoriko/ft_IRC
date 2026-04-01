@@ -33,18 +33,12 @@ static void	changeTopic(Server &server, Client &client, const std::vector<std::s
 	Channel *channel = server.getChannel(params[0]);
 
 	channel->setTopic(trailing, &client);
-	if (channel->getTopic() == "") {
-		//invia messaggio 331(RPL_NOTOPIC)
-		client.sendMessage(":server 331 " + client.getNickname() + " #" + channel->getName() + ":No topic is set\r\n");
-	}
-	else {
-		//    !!!!!!!!!!!!!!!!!!!!!!!!!!!!! Usare broadcast !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//invia messaggio 332(RPL_TOPIC)
-		client.sendMessage(":server 332 " + client.getNickname() + " #" + \
-			channel->getName() + " :" + channel->getTopic() + "\r\n");
-	}
+
+	//invia messaggio 332(RPL_TOPIC)
+	channel->broadcast(":server 332 " + client.getNickname() + " #" + \
+		channel->getName() + " :" + channel->getTopic() + "\r\n");
 	//invia messaggio 333(RPL_TOPICWHOTIME)
-	client.sendMessage(":server 333 " + client.getNickname() + " " + \
+	channel->broadcast(":server 333 " + client.getNickname() + " " + \
 			channel->getTopicCreator() + " " + channel->getTopicTime() + "\r\n");
 }
 
@@ -54,7 +48,7 @@ void cmd_topic (Server &server, Client &client, const std::vector<std::string> &
 	//prima cosa da controllare
 	if (params.empty()) {
 		//invia messaggio 461 (ERR_NEEDMOREPARAMS)
-		client.sendMessage("461 " + client.getNickname() + ": not enough parameters\r\n");
+		client.sendMessage("461 " + client.getNickname() + " TOPIC" + ": not enough parameters\r\n");
 		return;//+aggiunto return
 	}
 	Channel *channel = server.getChannel(params[0]);
@@ -81,13 +75,4 @@ void cmd_topic (Server &server, Client &client, const std::vector<std::string> &
 	else
 		giveTopic(server, client, params, trailing);
 	return ;
-
-	// else if (params.size() == 1) {
-	// 	giveTopic(server, client, params, trailing);
-	// }
-
-	// Non serve il controllo: dobbiamo controllare trailing, non params
-	// else if (params.size() > 1) {
-	// 		changeTopic(server, client, params, trailing); 
-	// }
 }
