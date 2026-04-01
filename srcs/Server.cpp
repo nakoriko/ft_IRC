@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 12:27:39 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/31 19:28:48 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/04/01 17:43:42 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <iostream>
+
 
 
 Server::Server (int port, std::string password) : _port(port), _password(password), _running(false) {
@@ -137,6 +138,12 @@ void Server::acceptNewClient() {
 	_pollfds.push_back(pfd);
 }
 
+void Server::addChannel(const std::string &name, Channel *channel) {
+	// std::cout << "Debug: addchannel()" << name << " ->" << channel << std::endl;
+	_channels[name] = channel;
+}
+
+
 
 void Server::removeClient(int fd) {
 //Client puo cdisconettersi in qualsiasi momento 
@@ -216,13 +223,19 @@ void Server::handleClientWrite(int fd) {
 }
 
 Client* Server::getClient(const std::string &nick) {
-	(void) (nick);
+	
+	for(std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++) {
+		if(it->second->getNickname() == nick)
+			return it->second;
+	} 
 	return NULL;
 }
 
 Channel* Server::getChannel(const std::string &name) {
-	(void) (name);
-	return NULL;
+	std::map<std::string, Channel*>::iterator it = _channels.find(name);
+	if(it == _channels.end())
+		return NULL;
+	return it->second;
 }
 
 std::string Server::getPassword() const {

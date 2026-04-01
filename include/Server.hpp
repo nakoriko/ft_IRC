@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 11:35:58 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/31 16:29:31 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/04/01 17:05:39 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ public:
 	void run();  //core. run loop until server will stopped (by signal);
 	// void stop();// check if run -> stop
 	void acceptNewClient();
+	void addChannel(const std::string &name, Channel *channel);
 	void removeClient(int fd);
 	void handleClientRead(int fd);
 	void handleClientWrite(int fd);

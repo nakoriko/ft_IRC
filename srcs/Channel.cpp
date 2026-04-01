@@ -2,6 +2,7 @@
 
 
 #include "../include/Channel.hpp"
+#include <iostream>
 
 
 Channel::Channel(const std::string &name) 
@@ -48,6 +49,7 @@ const std::string Channel::getTopicTime() {
 //MEMBERS
 void Channel::addMember(Client *client) {
 	_members[client->getNickname()] = client;
+	// std::cout << "Debug: addMember " << client->getNickname() << " to" << _name << ", size =" << _members.size() << std::endl;
 }
 
 void Channel::removeMember(Client *client) {
@@ -57,6 +59,8 @@ void Channel::removeMember(Client *client) {
 }
 
 bool Channel::isMember(Client *client) const{
+	// bool found = _members.find(client->getNickname()) != _members.end();
+	// std::cout << "Debug isMember() " << client->getNickname() << "= " << found << std::endl;
 	if(_members.find(client->getNickname()) == _members.end())
 		return false;
 	return true;
@@ -80,14 +84,14 @@ bool Channel::isMember(Client *client) const{
 	void Channel::addInvited(const std::string &nickname)  {
 		_invited.insert(nickname);
 	}
-	bool Channel::isInvited(std::string &nickname) const {
+	bool Channel::isInvited(const std::string &nickname) const {
 		if(_invited.find(nickname) == _invited.end())
 			return false;
 		return true;
 	}
 
 	//BROADCAST send message to all members of channel
-	void Channel::broadcast(const std::string &message, Client *exlude = NULL) {
+	void Channel::broadcast(const std::string &message, Client *exlude) {
 		for(std::map<std::string, Client*>::iterator it = _members.begin(); it != _members.end(); it++) {
 			if(exlude && it->second == exlude)
 				continue;
