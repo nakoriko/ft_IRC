@@ -52,6 +52,8 @@ public:
 	//BROADCAST send message to all members of channel
 	void broadcast(const std::string &message, Client *exlude = NULL); //+a parte  cliente appena aggiunto (Join.cpp n8.)
 
+	//NICK
+	void updateNick(const std::string &old_nick, const std::string & new_nick);
 	
 	//TOPIC
 	void setTopic(const std::string &topic, Client *creator);
@@ -71,6 +73,7 @@ public:
 	//+k / -k
 	void setKey(const std::string &key);
 	bool checkKey(const std::string &key) const;
+	const std::string getKey() const;
 
 	//+l/-l
 	void setUserLimit(int limit);

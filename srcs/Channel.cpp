@@ -22,6 +22,27 @@ const std::string &Channel::getName() const {
 	return _name;
 }
 
+//NICK
+//aggiorniamo i dati di member dopo cambi di NICK
+void Channel::updateNick(const std::string &old_nick, const std::string & new_nick) {
+	if(_members.find(old_nick) != _members.end()) {
+		Client *client = _members[old_nick];
+		_members.erase(old_nick);
+		_members[new_nick] = client;
+	}
+
+	if(_operators.find(old_nick) != _operators.end()) {
+		Client *client = _operators[old_nick];
+		_operators.erase(old_nick);
+		_operators[new_nick] = client;
+	}
+
+	if(_invited.find(old_nick) != _invited.end()) {
+		_invited.erase(old_nick);
+		_invited.insert(new_nick);
+	}
+}
+
 	
 //TOPIC
 void Channel::setTopic(const std::string &topic, Client *creator) {
@@ -128,6 +149,12 @@ bool Channel::isMember(Client *client) const{
 			return true;
 		return false;
 	}
+
+	const std::string Channel::getKey() const {
+		return _key;
+	}
+
+	
 
 	//+l/-l
 	void Channel::setUserLimit(int limit) {

@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 16:32:51 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/31 17:42:50 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/04/01 20:08:07 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../../include/Server.hpp"
 #include "../../include/Client.hpp"
 #include "../../include/Commands.hpp"
+#include "../../include/Channel.hpp"
 
 //Set o change nickName of client
 
@@ -41,7 +42,17 @@ void cmd_nick (Server &server, Client &client, const std::vector<std::string> &p
 	std::string old_nick = client.getNickname();
 	client.setNickname(new_nick);
 //5. Inviar ela conferma (se lo cambiato + messagio per channels (se dentro channels))
-	//aspetto broadcast() - tutti, except *this client;
+	if(!old_nick.empty()) {
+		const std::map<std::string, Channel*> &channels = server.getAllChannels();
+		for(std::map<std::string, Channel*>::const_iterator it = channels.begin(); it != channels.end(); it++) {
+			Channel *channel = it->second;
+			
+			if(channel->isMember(&client)) {
+				channel->updateNick(old_nick, new_nick);
+				channel->broadcast(":" + old_nick + " NICK " + new_nick + "\r\n", &client);
+			}
+		}
+	}
 
 //6. Check registrazione + username + nickname -> iviare welcome (RFC)
 	server.checkRegistration(client); // se c'e il pass, nick e user - > inviare welcome message)
