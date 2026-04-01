@@ -3,13 +3,15 @@
 #include "../../include/Server.hpp"
 #include "../../include/Client.hpp"
 #include "../../include/Commands.hpp"
+#include "../../include/Channel.hpp"
 
 static void giveTopic(Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing) {
+	(void) trailing;
 	Channel *channel = server.getChannel(params[0]);
 
-	if (channel->getTopic() == "") {
+	if (channel->getTopic().empty()) {
 			//invia messaggio 331(RPL_NOTOPIC)
-			client.sendMessage(":server 331 " + client.getNickname() + ": the channel #" + channel->getName() + " has no topic\r\n");
+			client.sendMessage("331 " + client.getNickname() + " " + channel->getName() + " :No topic is set\r\n");
 	}
 	else {
 		//invia messaggio 332(RPL_TOPIC)
@@ -41,28 +43,43 @@ static void	changeTopic(Server &server, Client &client, const std::vector<std::s
 
 //set o mostra topic di canale
 void cmd_topic (Server &server, Client &client, const std::vector<std::string> &params, const std::string &trailing) {
-	Channel *channel = server.getChannel(params[0]);
-
+	//prima cosa da controllare
 	if (params.empty()) {
 		//invia messaggio 461 (ERR_NEEDMOREPARAMS)
 		client.sendMessage("461 " + client.getNickname() + ": not enough parameters\r\n");
+		return;//+aggiunto return
 	}
-
-	else if (channel->isMember(&client) == false) {
-		client.sendMessage("442 " + client.getNickname() + ": not a member of channel #" + channel->getName() + "\r\n");;
+	Channel *channel = server.getChannel(params[0]);
+	//+aggiunto controllo se canale non esiste
+	if(!channel) {
+		client.sendMessage("403 " + client.getNickname() + " " + params[0] + " :No such channel\r\n");
+		return ;
 	}
-
-	else if (channel->isTopicRestricted() == true && \
+	
+	if (channel->isMember(&client) == false) {
+		client.sendMessage("442 " + client.getNickname() + " " + channel->getName() + " :You're not on that channel\r\n"); //sistemato messaggio secondo 6.1. Error replies
+		return ; //+ aggiunto return
+	}
+	//questo controllo solo se esiste il trailng ( = richiesta di cambio)
+	if(!trailing.empty()) {
+		if (channel->isTopicRestricted() == true && \
 			channel->isOperator(&client) == false) {
-		//invia messaggio 482 (ERR_CHANOPRIVSNEEDED)
-		client.sendMessage("482 " + client.getNickname() + ": operator privileges needed\r\n");
-	}
-
-	else if (params.size() == 1) {
-		giveTopic(server, client, params, trailing);
-	}
-
-	else if (params.size() > 1) {
+				//invia messaggio 482 (ERR_CHANOPRIVSNEEDED)
+				client.sendMessage("482 " + client.getNickname() + " " + channel->getName() +  " :You're not channel operator\r\n"); //6.1. Error replies
+				return ; //+ aggiunto
+		}
 		changeTopic(server, client, params, trailing);
 	}
+	else
+		giveTopic(server, client, params, trailing);
+	return ;
+
+	// else if (params.size() == 1) {
+	// 	giveTopic(server, client, params, trailing);
+	// }
+
+	// Non serve il controllo: dobbiamo controllare trailing, non params
+	// else if (params.size() > 1) {
+	// 		changeTopic(server, client, params, trailing); 
+	// }
 }

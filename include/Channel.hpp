@@ -18,17 +18,18 @@ private:
 	std::string _topic_creator;
 	std::time_t  _topic_time;
 
+	//Modes from subject:
+	bool _invite_only; // mode i: invite-only channel
+	bool _top_restricted; //mode t: just operator can change TOPIC
+	std::string _key; // mode k: channel password
+	int _user_limit; //mode l: limit of clients
+	
 	//"Databases":
 	std::map<std::string, Client*> _members; //needs for JOIN, PART,KICK,QUIT, PRIVMSG
 	std::map<std::string, Client*> _operators; //needs to check operator rights for KICK, INVITE, TOPIC, MODE
 	std::set<std::string> _invited; // to keep nicknames. Needs for INVTE, JOIN (if mode +i);
 
 
-	//Modes from subject:
-	bool _invite_only; // mode i: invite-only channel
-	bool _top_restricted; //mode t: just operator can change TOPIC
-	std::string _key; // mode k: channel password
-	int _user_limit; //mode l: limit of clients
 
 public:
 	Channel(const std::string &name);//creates channel with name

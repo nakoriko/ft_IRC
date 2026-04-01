@@ -7,12 +7,12 @@
 Channel::Channel(const std::string &name) 
 	:_name(name),
 	_topic(""),
+	_topic_creator(""),
+	_topic_time(0),
 	_invite_only(false),
 	_top_restricted(false),
 	_key(""),
-	_user_limit(0), 
-	_topic_time(0),
-	_topic_creator("")
+	_user_limit(0)
 	{}
 
 
