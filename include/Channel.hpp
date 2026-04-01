@@ -55,8 +55,8 @@ public:
 	//TOPIC
 	void setTopic(const std::string &topic, Client *creator);
 	const std::string &getTopic()const;
-	std::string getTopicCreator();
-	std::string getTopicTime();// long timestamp convertito in string
+	const std::string getTopicCreator();
+	const std::string getTopicTime();// long timestamp convertito in string
 
 	//MODES
 	//-i/+i

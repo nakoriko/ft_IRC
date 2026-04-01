@@ -17,25 +17,35 @@ Channel::Channel(const std::string &name)
 
 
 // GETTERS
-	const std::string &Channel::getName() const {
-		return _name;
-	}
+const std::string &Channel::getName() const {
+	return _name;
+}
 
 	
 //TOPIC
-	void Channel::setTopic(const std::string &topic, Client *creator) {
-		_topic = topic;
-		//std::time ritorna time attuale (si usa con NULL, se serve solo il numero)
-		_topic_time = std::time(NULL); 
-		_topic_creator = creator->getNickname();
-	}
+void Channel::setTopic(const std::string &topic, Client *creator) {
+	_topic = topic;
+	//std::time ritorna time attuale (si usa con NULL, se serve solo il numero)
+	_topic_time = std::time(NULL); 
+	_topic_creator = creator->getNickname();
+}
 
-	const std::string &Channel::getTopic()const {
-		return _topic;
-	}
+const std::string &Channel::getTopic()const {
+	return _topic;
+}
+
+const std::string Channel::getTopicCreator() {
+	return _topic_creator;
+}
+
+const std::string Channel::getTopicTime() {
+	struct tm* timeinfo = localtime(&_topic_time);
+	char buffer[16];
+	strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S UTC", timeinfo);
+	return buffer;
+}
 
 //MEMBERS
-
 void Channel::addMember(Client *client) {
 	_members[client->getNickname()] = client;
 }

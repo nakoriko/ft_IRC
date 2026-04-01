@@ -45,8 +45,8 @@ public:
 	void removeClient(int fd);
 	void handleClientRead(int fd);
 	void handleClientWrite(int fd);
-	Client *getClient(std::string &nick); //to find client by his name in map
-	Channel *getChannel(std::string &name);
+	Client *getClient(const std::string &nick); //to find client by his name in map
+	Channel *getChannel(const std::string &name);
 	std::string getPassword() const;
 	bool isNickTaken(const std::string &nick);
 	void checkRegistration(Client &client);

@@ -215,12 +215,12 @@ void Server::handleClientWrite(int fd) {
 	}
 }
 
-Client* Server::getClient(std::string &nick) {
+Client* Server::getClient(const std::string &nick) {
 	(void) (nick);
 	return NULL;
 }
 
-Channel* Server::getChannel(std::string &name) {
+Channel* Server::getChannel(const std::string &name) {
 	(void) (name);
 	return NULL;
 }
