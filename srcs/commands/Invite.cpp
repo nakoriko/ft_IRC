@@ -9,7 +9,7 @@ void cmd_invite (Server &server, Client &client, const std::vector<std::string> 
 	(void) server;
 	(void) client;
 	(void) params;
-	(void) trailing;
+	(void) trailing;// non necessario
 
 
 	//1. Controllare che il canale passato (dentro params)
@@ -24,5 +24,50 @@ void cmd_invite (Server &server, Client &client, const std::vector<std::string> 
 	//7. Ogni messaggio dal client al channel devono essere inviati a tutti i membri di channel ()
 	//	(la richiesta JOIN - e' un messsagio, allora bisogna di mandare notifica a tuttti)
 	//	 broadcast();
-	
+
+	//[https://modern.ircdocs.horse/#invite-message]
+	//params[0] = nickname; params[1] = channel
+	/*
+	Channel *channel = server.getChannel(params[1]);
+
+	//invia messaggio 461 (ERR_NEEDMOREPARAMS)
+	//"<client> <command> :Not enough parameters"
+	if (params.size() < 2) {
+		client.sendMessage("461 " + client.getNickname() + " INVITE" +  + " :not enough parameters\r\n");
+	}
+
+	//invia messaggio 403 (ERR_NOSUCHCHANNEL)
+	//"<client> <channel> :No such channel"
+	else if (!channel) {
+		client.sendMessage("403 " + client.getNickname() + " #" + params[1] + ": no such channel\r\n");
+	}
+
+	//invia messaggio 442 (ERR_NOTONCHANNEL)
+	//"<client> <channel> :You're not on that channel"
+	else if (channel->isMember(&client) == false) {
+		client.sendMessage("442 " + client.getNickname() + " #" + channel->getName() + ": You're not on that channel\r\n");
+	}
+
+	//invia messaggio 482 (ERR_CHANOPRIVSNEEDED)
+	//"<client> <channel> :You're not channel operator"
+	else if (channel->isInviteOnly() && channel->isOperator(&client) == false) {
+		client.sendMessage("482 " + client.getNickname() + " #" + channel->getName() + ": You're not channel operator\r\n");
+	}
+
+	//invia messaggio 443 (ERR_USERONCHANNEL)
+	//"<client> <nick> <channel> :is already on channel"
+	else if (channel->isMember(server.getClient(params[0]))) {
+		client.sendMessage("442 " + client.getNickname() + " " + params[0] + " #" + channel->getName() + \
+			": is already on channel\r\n");
+	}
+
+	//invia messaggio 341 (RPL_INVITED))
+	// INVITE reply example dove alice invita bob nel canale general:
+	//  ":server 341 alice bob #general" to alice(requesting client)
+	//  ":alice!alice@hostname INVITE bob :#general" to bob(target client)
+	//   -> ":" + sender->nickname + "!" + sender->username + "@" + sender->hostname + " INVITE ..."
+	else {
+		;
+	}
+	*/
 }

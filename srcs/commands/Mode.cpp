@@ -21,4 +21,9 @@ void cmd_mode (Server &server, Client &client, const std::vector<std::string> &p
 		//  +o/-o - addOperator()
 		//  +l / -l setUserLimit()
 	//6. Iniiare mode (channel->broadcast())
+
+	//[https://modern.ircdocs.horse/#mode-message]
+	//params[0] = targetchannel; params[1] = modestring. 
+	// Se non c'è modestring, ritorna current modes
+	//Channel *channel = server.getChannel(params[0]);
 }
