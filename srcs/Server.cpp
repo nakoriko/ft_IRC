@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 12:27:39 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/04/01 17:43:42 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/04/01 19:10:04 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,10 @@ void Server::addChannel(const std::string &name, Channel *channel) {
 	// std::cout << "Debug: addchannel()" << name << " ->" << channel << std::endl;
 	_channels[name] = channel;
 }
+void Server::removeChannel(const std::string &name) {
+	_channels.erase(name);
+}
+
 
 
 
@@ -237,6 +241,11 @@ Channel* Server::getChannel(const std::string &name) {
 		return NULL;
 	return it->second;
 }
+
+const std::map<std::string, Channel*> &Server::getAllChannels () const {
+	return _channels;
+}
+
 
 std::string Server::getPassword() const {
 	return _password;
