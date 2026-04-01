@@ -8,14 +8,15 @@
 #include <string>
 #include <set>
 #include <map>
+#include <ctime>
 #include "Client.hpp"
 
 class Channel {
 private:
 	std::string _name;
 	std::string _topic; //command TOPIC
-	std::string _topic_creator; //utente che ha scritto il topic attuale
-	long _topic_time; //unix timestamp per data dell'ultima modifica a _topic
+	std::string _topic_creator;
+	std::time_t  _topic_time;
 
 	//"Databases":
 	std::map<std::string, Client*> _members; //needs for JOIN, PART,KICK,QUIT, PRIVMSG
@@ -52,7 +53,7 @@ public:
 
 	
 	//TOPIC
-	void setTopic(const std::string &topic);
+	void setTopic(const std::string &topic, Client *creator);
 	const std::string &getTopic()const;
 	std::string getTopicCreator();
 	std::string getTopicTime();// long timestamp convertito in string
