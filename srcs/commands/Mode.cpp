@@ -5,6 +5,9 @@
 #include "../../include/Commands.hpp"
 #include "../../include/Channel.hpp"
 
+#include <cstdlib>
+
+
 //cambia i modi di channel (bools in private members of Channel.hpp)
 
 void handleModeI(Channel *channel, bool adding, const std::string &target, Client &client) {
@@ -58,6 +61,8 @@ void cmd_mode (Server &server, Client &client, const std::vector<std::string> &p
 	//  +k / -k - setKey()
 	//  +o/-o - addOperator()
 	//  +l / -l setUserLimit()
+
+	(void) trailing;
 
 	//1. Check se canale (params) esiste
 	if(params.empty()) {
