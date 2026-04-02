@@ -4,6 +4,7 @@
 #include "../../include/Client.hpp"
 #include "../../include/Commands.hpp"
 #include "../../include/Channel.hpp"
+#include <cstdlib>
 
 //cambia i modi di channel (bools in private members of Channel.hpp)
 
@@ -30,7 +31,7 @@ void handleModeK(Channel *channel, bool adding, const std::string &target, Clien
 void handleModeO(Channel *channel, bool adding, const std::string &target, Client &client, const std::string &nick, Server &server) {
 	Client *target_client = server.getClient(nick);
 	if(!target_client || !channel->isMember(target_client)) {
-		client.sendMessage("441 " + client.getNickname() + " " + nick + " " + target + " :They aren't on that channel\r\n");
+		client.sendMessage("441 " + client.getNickname() + " " + nick + " " + target + " :is not on that channel\r\n");
 		return ;
 	}
 	if(adding) {
@@ -58,7 +59,7 @@ void cmd_mode (Server &server, Client &client, const std::vector<std::string> &p
 	//  +k / -k - setKey()
 	//  +o/-o - addOperator()
 	//  +l / -l setUserLimit()
-
+	(void)	trailing;
 	//1. Check se canale (params) esiste
 	if(params.empty()) {
 		client.sendMessage("461 " + client.getNickname() + " MODE :Not enough parameters\r\n");
@@ -122,7 +123,7 @@ void cmd_mode (Server &server, Client &client, const std::vector<std::string> &p
 				client.sendMessage("461 " + client.getNickname() + " MODE :Not enough parameters\n");
 				return;
 			}
-			handleModeO(channel, adding, target, client, adding ? params[2] : "", server);
+			handleModeO(channel, adding, target, client, params[2], server);
 			break;
 		case 'l':
 			if(adding && params.size() < 3) {

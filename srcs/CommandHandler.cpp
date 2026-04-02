@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 16:41:09 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/30 15:26:56 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/04/02 16:30:38 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,12 @@ void CommandHandler::execute(Server &server, Client &client, const std::string &
 			return ;
 	}
 	//eseguiamo il metodo che corrisponde a "NOME" di commanda dentro la mappa sopra
+	if(it->first != "PASS" && it->first != "NICK" && it->first != "USER") {
+		if(!client.isRegistered()) {
+			client.sendMessage("You need to register\r\n");
+			return;
+		}
+	}
 	it->second(server, client, cmd.params, cmd.trailing);
 	
 
