@@ -6,7 +6,7 @@
 #    By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/25 10:30:33 by nakoriko          #+#    #+#              #
-#    Updated: 2026/03/30 10:37:58 by nakoriko         ###   ########.fr        #
+#    Updated: 2026/04/01 13:10:23 by nakoriko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,9 @@ SRCS = srcs/main.cpp srcs/Server.cpp srcs/Client.cpp srcs/CommandHandler.cpp \
 		srcs/commands/Quit.cpp srcs/commands/User.cpp \
 		\
 		srcs/commands/Invite.cpp srcs/commands/Kick.cpp \
-		srcs/commands/Mode.cpp srcs/commands/Topic.cpp\
+		srcs/commands/Mode.cpp srcs/commands/Topic.cpp \
+		\
+		srcs/Channel.cpp
 
 	
 

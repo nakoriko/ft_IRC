@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 11:35:58 by nakoriko          #+#    #+#             */
-/*   Updated: 2026/03/31 16:29:31 by nakoriko         ###   ########.fr       */
+/*   Updated: 2026/04/01 19:10:08 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,16 @@ public:
 	void run();  //core. run loop until server will stopped (by signal);
 	// void stop();// check if run -> stop
 	void acceptNewClient();
+	void addChannel(const std::string &name, Channel *channel);
+	void removeChannel(const std::string &name);
 	void removeClient(int fd);
 	void handleClientRead(int fd);
 	void handleClientWrite(int fd);
-	Client *getClient(std::string &nick); //to find client by his name in map
-	Channel *getChannel(std::string &name);
+	Client *getClient(const std::string &nick); //to find client by his name in map
+	Channel *getChannel(const std::string &name);
+	//!!!! getters per prendere mappa intera
+	const std::map<std::string, Channel*> &getAllChannels () const;
+	
 	std::string getPassword() const;
 	bool isNickTaken(const std::string &nick);
 	void checkRegistration(Client &client);
